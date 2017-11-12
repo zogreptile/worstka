@@ -1,0 +1,44 @@
+@mixin clearfix() {
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+@mixin list-reset() {
+    margin: 0;
+    padding: 0;
+
+    li {
+        list-style: none;
+    }
+}
+
+@mixin placeholder($color) {
+    &::-webkit-input-placeholder {
+        /* Chrome/Opera/Safari */
+        color: $color;
+        font-family: inherit;
+    }
+
+    &::-moz-placeholder {
+        /* Firefox 19+ */
+        color: $color;
+        opacity: 1;
+        font-family: inherit;
+    }
+
+    &:-ms-input-placeholder {
+        /* IE 10+ */
+        color: $color;
+        font-family: inherit;
+    }
+
+    &:-moz-placeholder {
+        /* Firefox 18- */
+        color: $color;
+        opacity: 1;
+        font-family: inherit;
+    }
+}

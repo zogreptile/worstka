@@ -1,0 +1,12 @@
+@import "variables.scss";
+@import "normalize.scss";
+@import "fonts.scss";
+@import "mixins.scss";
+@import "tags.scss";
+@import "layout.scss";
+
+@import "header/*";
+@import "blocks/*";
+@import "footer/*";
+
+@import "utils.scss";

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        {% block styles %}
+        {% endblock %}
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        {% include "../includes/header.html" %}
+
+        {% block content %}
+        {% endblock %}
+
+        {% include "../includes/footer.html" %}
+
+        <script src="js/jquery-3.2.1.min.js"></script>
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>
