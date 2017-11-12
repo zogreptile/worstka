@@ -23,7 +23,7 @@ gulp.task('browser-sync', function () {
 gulp.task('nunjucks', function() {
 	gulp.src(PATHS.src.templates + '*.html')
 		.pipe(data(function (file) {
-			return require(PATHS.src.data + '_global.json');
+			return require('./' + PATHS.src.data + '_global.json');
 		}))
 		.pipe(nunjucks.compile())
 		.pipe(gulp.dest(PATHS.dist.html))

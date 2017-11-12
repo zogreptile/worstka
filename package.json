@@ -17,8 +17,8 @@
   },
   "paths": {
     "src": {
-      "templates": "src/_nunjucks/",
-      "styles": "src/_scss/",
+      "templates": "src/_templates/",
+      "styles": "src/_styles/",
       "data": "src/_data/"
     },
     "dist": {
