@@ -15,30 +15,30 @@
     }
 }
 
-@mixin placeholder($color) {
+@mixin placeholder($color, $font) {
     &::-webkit-input-placeholder {
         /* Chrome/Opera/Safari */
         color: $color;
-        font-family: inherit;
+        font-family: $font;
     }
 
     &::-moz-placeholder {
         /* Firefox 19+ */
         color: $color;
         opacity: 1;
-        font-family: inherit;
+        font-family: $font;
     }
 
     &:-ms-input-placeholder {
         /* IE 10+ */
         color: $color;
-        font-family: inherit;
+        font-family: $font;
     }
 
     &:-moz-placeholder {
         /* Firefox 18- */
         color: $color;
         opacity: 1;
-        font-family: inherit;
+        font-family: $font;
     }
 }

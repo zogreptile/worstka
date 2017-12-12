@@ -26,5 +26,7 @@
       "css": "dist/css/"
     }
   },
-  "browserslist": ["last 8 versions"]
+  "browserslist": [
+    "last 8 versions"
+  ]
 }

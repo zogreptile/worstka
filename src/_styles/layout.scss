@@ -1,0 +1,12 @@
+.container {
+    padding: 0 15px;
+    margin: 0 auto;
+
+    @media (min-width: 1200px) {
+        width: 1170px;
+    }
+}
+
+.page-wrap {
+    flex: 1 0 auto;
+}
