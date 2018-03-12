@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    outline: none;
 }
 
 html {
@@ -22,6 +23,7 @@ h4,
 h5,
 h6 {
     margin: 0;
+    font-weight: inherit;
 }
 
 a {
@@ -40,9 +42,11 @@ input,
 textarea {
     padding: 0;
     width: 100%;
+    font-family: inherit;
 }
 
 select {
+    font-family: inherit;
     cursor: pointer;
 }
 
@@ -51,5 +55,6 @@ table {
 }
 
 button {
+    font-family: inherit;
     cursor: pointer;
 }

@@ -1,21 +1,32 @@
 $(function () {
+    //Пользовательское соглашение
     var $agreement = $('.agreement'),
         $agreementCheck = $agreement.find('.agreement__checkbox'),
-        $formSubmit = $agreement.closest('form').find('.form__btn');
+        $formSubmit = $agreement.closest('form').find('.btn');
 
-    $formSubmit.on('statechange', function () {
-        var $this = $(this);
-
-        ($this.prop('disabled')) ?
-            $this.prop('disabled', false) :
-            $this.prop('disabled', true);
-    })
-
-    $agreementCheck.click(function (e) {
-        $formSubmit.trigger('statechange');
+    $agreementCheck.click(function () {
+        $(this).prop('checked') === true ?
+            $formSubmit.prop('disabled', false) :
+            $formSubmit.prop('disabled', true);
     })
 
 
+
+    //-------------
+    function isMobile() {
+        if (navigator.userAgent.match(/Android/i) ||
+            navigator.userAgent.match(/webOS/i) ||
+            navigator.userAgent.match(/iPhone/i) ||
+            navigator.userAgent.match(/iPad/i) ||
+            navigator.userAgent.match(/iPod/i) ||
+            navigator.userAgent.match(/BlackBerry/i) ||
+            navigator.userAgent.match(/Windows Phone/i)) {
+            return true;
+        } 
+        else {
+            return false;
+        }
+    }
 
     window.utils = {
         notification: function (message, duration) {
@@ -50,20 +61,32 @@ $(function () {
             });
         },
 
-        validateForm: function (form) {
-            var $form = $(form);
-
+        validateForm: function ($form) {
             $form.find('.form__field-alert').remove();
 
             function showAlert(message) {
-                return $('<div class="form__field-alert">' + message + '</div>')
+                return $('<div class="form__field-alert">').html(message);
             }
 
             function checkRequiredField(field) {
                 if (field.value) {
                     return true;
-                } else {
+                } 
+                else {
                     showAlert('Обязательное поле').insertBefore(field);
+                    return false;
+                }
+            }
+
+            function checkNumericField(field) {
+                var val = field.value,
+                    regexp = /^[^a-zA-Z]*$/g;
+
+                if (val !== '' && val.match(regexp)) {
+                    return true;
+                } 
+                else {
+                    showAlert('Введите корректное значение').insertBefore(field);
                     return false;
                 }
             }
@@ -72,9 +95,10 @@ $(function () {
                 var val = field.value,
                     regexp = /^[0-9a-zА-Яа-я\-\_\.]+\@[0-9a-zА-Яа-я-]{2,}\.[a-zА-Яа-я]{2,}$/i;
 
-                if (val.match(regexp)) {
+                if (val !== '' && val.match(regexp)) {
                     return true;
-                } else {
+                } 
+                else {
                     showAlert('Введите корректный адрес').insertBefore(field);
                     return false;
                 }
@@ -86,7 +110,11 @@ $(function () {
                 }
                 else if ($(field).hasClass('js-required-email')) {
                     return checkEmailField(field);
-                } else {
+                } 
+                else if ($(field).hasClass('js-required-numeric')) {
+                    return checkNumericField(field);
+                } 
+                else {
                     return true;
                 }
             }
@@ -95,8 +123,8 @@ $(function () {
                 isFormValid = true;
 
             $.each(fields, function (ind, el) {
-                var checked_field = validateField(el);
-                isFormValid = isFormValid && checked_field;
+                var checkedField = validateField(el);
+                isFormValid = isFormValid && checkedField;
             });
 
             return isFormValid;

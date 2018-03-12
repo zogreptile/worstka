@@ -1,0 +1,52 @@
+//
+// Сброс стилей WYSIWYG-редакторов
+//
+
+.editor-content {
+    line-height: 1.45 !important;
+    font-size: 1rem !important;
+
+    * {
+        font-size: 1em !important;
+        font-family: $base-font !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin-top: 0 !important;
+        margin-bottom: 15px !important;
+        font-weight: bold !important;
+        line-height: 1 !important;
+    }
+
+    h1 {
+        font-size: 1.5em !important;
+    }
+    h2 {
+        font-size: 1.4em !important;
+    }
+    h3 {
+        font-size: 1.3em !important;
+    }
+    h4 {
+        font-size: 1.2em !important;
+    }
+    h5 {
+        font-size: 1.1em !important;
+    }
+    h6 {
+        font-size: 1em !important;
+    }
+
+    img {
+        display: block !important;
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-shadow: 0 0 3px 0 #dadada !important;
+    }
+}
