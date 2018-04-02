@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" prefix="og: http://ogp.me/ns#">
     <head>
         <title>{% block title %}{% endblock %}</title>
         <meta charset="UTF-8">
@@ -17,23 +17,34 @@
         <meta name="msapplication-config" content="favicon/browserconfig.xml">
         <meta name="theme-color" content="#ffffff">
 
-        {% block styles %}
+        <meta property="og:title" content="{% block og_title %}{% endblock %}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="/" />
+        <meta property="og:image" content="#" />
+
+        {% block extra_styles %}
         {% endblock %}
-        <link rel="stylesheet" href="css/style.css">
+
+        {% block common_styles %}
+            <link rel="stylesheet" href="css/style.css">
+        {% endblock %}
     </head>
     <body>
-        <div class="page-wrap">
-            {% include "../includes/header.html" %}
+        {% include "../includes/header.html" %}
 
+        <div class="page-wrap">
             {% block content %}
             {% endblock %}
         </div>
 
         {% include "../includes/footer.html" %}
 
-        <script src="js/jquery-3.2.1.min.js"></script>
-        <script src="js/app.js"></script>
-        {% block scripts %}
+        {% block common_scripts %}
+            <script src="js/jquery-3.2.1.min.js"></script>
+            <script src="js/main.js"></script>
+        {% endblock %}
+
+        {% block extra_scripts %}
         {% endblock %}
     </body>
 </html>

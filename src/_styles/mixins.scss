@@ -15,7 +15,7 @@
     }
 }
 
-@mixin placeholder($color, $font) {
+@mixin placeholder($color: inherit, $font: inherit) {
     &::-webkit-input-placeholder {
         /* Chrome/Opera/Safari */
         color: $color;
@@ -41,4 +41,24 @@
         opacity: 1;
         font-family: $font;
     }
+}
+
+@mixin responsive-bg() {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@mixin input-number-arrow-reset() {
+    -moz-appearance:textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+}
+
+@mixin prevent-selection() {
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
 }

@@ -23,6 +23,7 @@ h4,
 h5,
 h6 {
     margin: 0;
+    font-size: inherit;
     font-weight: inherit;
 }
 
@@ -49,6 +50,11 @@ select {
     font-family: inherit;
     cursor: pointer;
 }
+
+fieldset {
+    margin:0;
+    border:none;
+} 
 
 table {
     width: 100%;

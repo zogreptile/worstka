@@ -1,7 +1,7 @@
 {
   "name": "worstka",
-  "version": "1.0.0",
-  "homepage": "github.com/zogreptile/worstka",
+  "version": "1.0.1",
+  "homepage": "https://github.com/zogreptile/worstka",
   "devDependencies": {
     "browser-sync": "^2.18.12",
     "gulp": "^3.9.1",
