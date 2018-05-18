@@ -1,0 +1,31 @@
+.loading-btn {
+    color: transparent !important;
+    position: relative;
+
+    &:after {
+        content: '';
+        display: block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #fff;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        border-radius: 50%;
+        outline: 0 solid rgba(0,0,0,0);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -13px;
+        margin-left: -13px;
+        animation-name: spinner;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: cubic-bezier(0.74, 0.46, 0.21, 0.53);
+    }
+}
+
+@keyframes spinner {
+    100% {
+        transform: rotate(360deg);
+    }
+}

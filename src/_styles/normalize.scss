@@ -77,30 +77,6 @@ main {
 
 
 /**
- * Add the correct margin in IE 8.
- */
-
-figure {
-    margin: 0;
-}
-
-
-/**
- * 1. Add the correct box sizing in Firefox.
- * 2. Show the overflow in Edge and IE.
- */
-
-hr {
-    box-sizing: content-box;
-    /* 1 */
-    height: 0;
-    /* 1 */
-    overflow: visible;
-    /* 2 */
-}
-
-
-/**
  * 1. Correct the inheritance and scaling of font size in all browsers.
  * 2. Correct the odd `em` font sizing in all browsers.
  */
@@ -181,25 +157,6 @@ samp {
 
 
 /**
- * Add the correct font style in Android 4.3-.
- */
-
-dfn {
-    font-style: italic;
-}
-
-
-/**
- * Add the correct background and color in IE 9-.
- */
-
-mark {
-    background-color: #ff0;
-    color: #000;
-}
-
-
-/**
  * Add the correct font size in all browsers.
  */
 
@@ -232,16 +189,6 @@ sup {
 
 /* Embedded content
    ========================================================================== */
-
-
-/**
- * Add the correct display in IE 9-.
- */
-
-audio,
-video {
-    display: inline-block;
-}
 
 
 /**

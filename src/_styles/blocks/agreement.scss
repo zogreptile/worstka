@@ -18,11 +18,11 @@
     z-index: -1;
 
     &:checked + .agreement__checkbox-view {
-        background-color: hotpink;
+        background-color: #000;
     }
 
     &:focus + .agreement__checkbox-view {
-        border-color: hotpink;
+        border-color: #000;
     }
 }
 

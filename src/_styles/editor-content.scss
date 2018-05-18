@@ -6,6 +6,8 @@
     line-height: 1.45 !important;
     font-size: 1rem !important;
 
+    @include clearfix();
+
     * {
         font-size: 1em !important;
         font-family: $base-font !important;
