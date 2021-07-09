@@ -1,75 +1,120 @@
-var gulp 			= require('gulp'),
-	scss 			= require('gulp-sass'),
-	bulkSass 		= require('gulp-sass-glob-import'),
-	rename 			= require('gulp-rename'),
-	bs 				= require('browser-sync').create(),
-	data 			= require('gulp-data'),
-	autoprefixer 	= require('gulp-autoprefixer'),
-	cssmin 			= require('gulp-cssmin'),
-	combineMq 		= require('gulp-combine-mq'),
-	sourcemaps 		= require('gulp-sourcemaps'),
-	nunjucks 		= require('gulp-nunjucks'),
-	PATHS 			= require('./package.json').paths,
-	BROWSERS_LIST 	= require('./package.json').browserslist;
+'use strict';
 
-gulp.task('browser-sync', function () {
-	bs.init({
-		server: {
-			baseDir: './dist'
-		}
-	});
-});
+const { src, dest, series, watch } = require('gulp');
+const gulpIf = require('gulp-if');
+const browserSync = require('browser-sync').create();
+const rename = require('gulp-rename');
+const	nunjucks = require('gulp-nunjucks');
+const nunjucksCore = require('nunjucks');
+const plumber = require('gulp-plumber');
+const del = require('del');
+const Fiber = require('fibers');
+const sass = require('gulp-sass');
+const sassGlob = require('gulp-sass-glob');
+const postcss = require('gulp-postcss');
+const csso = require('gulp-csso');
+const autoprefixer = require('autoprefixer');
+const prettifyHtml = require('gulp-pretty-html');
+const webpack = require('webpack-stream');
 
-gulp.task('nunjucks', function() {
-	gulp.src(PATHS.src.templates + '*.html')
-		.pipe(data(function (file) {
-			return require('./' + PATHS.src.data + '_global.json');
-		}))
-		.pipe(nunjucks.compile())
-		.pipe(gulp.dest(PATHS.dist.html))
-		.pipe(bs.reload({ stream: true }));
-});
+const webpackConfig = require('./webpack.config');
 
-gulp.task('scss', function () {
-	return gulp.src(PATHS.src.styles + 'main.scss')
-		.pipe(sourcemaps.init())
-		.pipe(bulkSass())
-		.pipe(scss().on('error', scss.logError))
-		.pipe(scss({
-			includePaths: [PATHS.src.styles]
-		}))
-        .pipe(sourcemaps.write())
-        .pipe(rename('style.css'))
-        .pipe(gulp.dest(PATHS.dist.css))
-        .pipe(bs.reload({stream: true}));
-});
+sass.compiler = require('sass');
 
-gulp.task('autoprefixer', function() {
-	gulp.src(PATHS.dist.css + 'style.css')
-		.pipe(autoprefixer({
-			browsers: BROWSERS_LIST,
-			cascade: false
-		}))
-		.pipe(gulp.dest(PATHS.dist.css));
-});
+const IS_PROD = process.env.ENV === 'production';
 
-gulp.task('css', function() {
-	gulp.src(PATHS.dist.css + 'style.css')
-		.pipe(autoprefixer({
-			browsers: BROWSERS_LIST,
-			cascade: false
-		}))
-		.pipe(combineMq({
-			beautify: true
-		}))
-		.pipe(cssmin())
-		.pipe(rename('style.min.css'))
-		.pipe(gulp.dest(PATHS.dist.css));
-});
+function styles() {
+  const sourcemaps = !IS_PROD;
 
-gulp.task('watcher', function() {
-	gulp.watch(PATHS.src.templates + '**/*.html', ['nunjucks']);
-	gulp.watch(PATHS.src.styles + '**/*.scss', ['scss']);
-});
+  return src('src/styles/main.scss', { sourcemaps })
+    .pipe(plumber())
+    .pipe(sassGlob())
+    .pipe(sass({
+      fiber: Fiber,
+      includePaths: ['node_modules'],
+    }).on('error', sass.logError))
+    .pipe(postcss([
+      autoprefixer(),
+    ]))
+    .pipe(gulpIf(IS_PROD, csso({ comments: false })))
+    .pipe(rename(IS_PROD ? 'style.min.css' : 'style.css'))
+    .pipe(dest('build/css', { sourcemaps }));
+}
 
-gulp.task('default', ['watcher', 'browser-sync']);
+function copyJs() {
+  return src('src/js/**', { base: 'src' })
+    .pipe(dest('build'));
+}
+
+function bundleJs() {
+  console.log('🔴 BUNDLE JS');
+
+  return src('src/js-entry-points/**/*.{js,jsx}',)
+    .pipe(plumber())
+    .pipe(webpack(webpackConfig))
+    .pipe(dest('build/js'));
+}
+
+function html() {
+  const mockData = require('./src/mock-data/index.js');
+	const env = new nunjucksCore.Environment(
+    new nunjucksCore.FileSystemLoader('src/templates')
+  );
+
+	env.addGlobal('styles', IS_PROD ? `css/style.min.css?ver=${Date.now()}` : 'css/style.css');
+
+  return src('src/templates/pages/*.html')
+    .pipe(plumber())
+    .pipe(nunjucks.compile(mockData, { env }))
+    .pipe(gulpIf(IS_PROD, prettifyHtml({
+      indent_char: ' ',
+      indent_size: 2,
+      preserve_newlines: false,
+    })))
+    .pipe(dest('build'));
+}
+
+function copyStaticFiles() {
+  return src([
+    'src/favicon/**',
+    'src/fonts/**/*.{woff,woff2}',
+    'src/img/**',
+  ], { base: 'src' })
+  .pipe(dest('build'));
+}
+
+function refresh(done) {
+  browserSync.reload();
+  done();
+}
+
+function server() {
+  browserSync.init({
+    server: 'build/',
+    notify: false,
+    open: true,
+    cors: true,
+    ui: false,
+  });
+
+  watch('src/js/**/*.js', series(copyJs, refresh));
+  watch('src/js-webpack/**/*.js', series(bundleJs, refresh));
+  watch('src/styles/**/*.scss', series(styles, refresh));
+  watch('src/templates/**/*.html', series(html, refresh));
+}
+
+function clean() {
+  return del('build');
+}
+
+const build = series(
+  clean,
+  copyStaticFiles,
+  styles,
+  copyJs,
+  bundleJs,
+  html,
+);
+
+exports.default = series(build, server);
+exports.build = build;
