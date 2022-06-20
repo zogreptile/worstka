@@ -1,0 +1,16 @@
+@mixin placeholder($color: inherit, $font: inherit) {
+  &::placeholder {
+    opacity: 1;
+    color: $color;
+    font-family: $font;
+  }
+}
+
+@mixin inputNumberArrowReset() {
+  appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+  }
+}

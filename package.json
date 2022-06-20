@@ -1,32 +1,27 @@
 {
   "name": "worstka",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "homepage": "https://github.com/zogreptile/worstka",
+  "scripts": {
+    "dev": "cross-env ENV=development npx gulp",
+    "build": "cross-env ENV=production npx gulp build"
+  },
   "devDependencies": {
-    "browser-sync": "^2.18.12",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
-    "gulp-combine-mq": "^0.4.0",
-    "gulp-cssmin": "^0.2.0",
-    "gulp-data": "^1.2.1",
-    "gulp-nunjucks": "^3.0.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
-    "gulp-sass-glob-import": "^0.1.0",
-    "gulp-sourcemaps": "^2.6.0"
-  },
-  "paths": {
-    "src": {
-      "templates": "src/_templates/",
-      "styles": "src/_styles/",
-      "data": "src/_data/"
-    },
-    "dist": {
-      "html": "dist/",
-      "css": "dist/css/"
-    }
-  },
-  "browserslist": [
-    "last 8 versions"
-  ]
+    "autoprefixer": "10.4.7",
+    "browser-sync": "2.27.10",
+    "cross-env": "7.0.3",
+    "del": "6.1.1",
+    "gulp": "4.0.2",
+    "gulp-csso": "4.0.1",
+    "gulp-if": "3.0.0",
+    "gulp-nunjucks": "5.1.0",
+    "gulp-plumber": "1.2.1",
+    "gulp-postcss": "9.0.1",
+    "gulp-pretty-html": "2.0.10",
+    "gulp-rename": "2.0.0",
+    "gulp-sass": "5.1.0",
+    "gulp-sass-glob": "1.1.0",
+    "sass": "1.52.3",
+    "webpack-stream": "7.0.0"
+  }
 }

@@ -1,60 +1,83 @@
 # Worstka
-**Шаблон проекта для быстрого старта**
+Шаблон проекта для быстрого старта
+
+## Версия окружения
+Проект работает как минимум с `Node.js v16.13.2`
 
 ## Структура папок и файлов
 ```
-├── dist/                             # Готовый проект
-│   ├── css/                          # Стили
-│   ├── fonts/                        # Шрифты
-│   ├── img/                          # Статические изображения
-│   ├── js/                           # Скрипты
-│   |   ├── jquery-3.2.1.min.js       # Jquery 3
-│   │   └── main.js                   # Главный скрипт
-│   ├── media/                        # Медиа файлы (удаляется на этапе интеграции с бекендом)
-│   └── index.html                    # Страница
+├── dist/
+│   ├── css/
+│   ├── fonts/
+│   ├── img/
+│   ├── js/
+│   ├── media/
+│   └── index.html
 |
 └── src/                              # Исходники проекта
-    ├── _data/                        # Данные
-    │   └── _global.json              # 
-    ├── _styles/                      # Стили
-    |   ├── blocks/                   # Уникальные блоки
-    |   ├── header/                   # Хедер
-    |   │   └── header.scss           # 
-    |   ├── footer/                   # Футер
-    |   │   └── footer.scss           #
-    |   ├── editor-content.scss/      # Сброс стилей WYSIWYG-редакторов
-    |   ├── fonts.scss/               # Шрифты
-    |   ├── layout.scss/              # Сетка
-    |   ├── mixins.scss/              # Примеси
-    |   ├── normalize.scss/           # normalize.css v7.0.0 с минимальными изменениями
-    |   ├── tags.scss/                # Расширение нормалайза
-    |   ├── utils.scss/               # Универсальные вспомогательные стили
-    |   ├── variables.scss            # Переменные
-    |   └── main.scss/                # Главный стилевой файл (все импорты здесь)
-    └── _templates/                   # Шаблоны
-        ├── includes/                 # Инклуды
-        │   ├── header.html           # Хедер
-        ├── └── footer.html           # Футер
-        ├── layout/                   # Шаблоны для наследования
-        |   └── base.html             # Базовый шаблон
-        └── index.html/               # Шаблон главной страницы
+    ├── favicon/                      #
+    ├── fonts/                        #
+    ├── img/                          #
+    ├── mocks/                        #
+    ├── styles/                       #
+    │   ├── pure/                     #
+    │   └── preprocessed/             #
+    ├── js/                           #
+    │   ├── pure/                     #
+    │   └── webpack/                  #
+    └── templates/                    #
+        ├── includes/                 #
+        ├── pages/                    #
+        ├── base.html                 # Базовый шаблон, от которого наследуются шаблоны страниц
 ```
 
-## !
-Статические файлы — стили (кроме описанных в галп-таске), скрипты, изображения и пр., следует вручную добавлять в соответствующие папки в dist/.
+## TODO
+- разобраться с динамическим подхватом скриптов для вебпака
 
-## Данные
-В качестве хранилища данных используется файл "src/\_data/\_global.json". Предполагается, что он содержит общие для всего сайта данные. При необходимости, можно добавить новые json-ы, после чего указать их в таске для сборки шаблонов.
+## JS
+- `src/js/pure` — скрипты, не требующие сборки, копируются в директорию готового проекта "как есть"
+- `src/js/webpack` — скрипты, собираемые вебпаком
+
+## Стили
+- `src/styles/pure` — css, не требующий препроцессинга (стили сторонних библиотек), копируются в директорию готового проекта "как есть"
+- `src/styles/preprocessed` — стили, обрабатываемые препроцессором
+
+## Моки
+Можно описать данные в `src/mocks/index.js`, чтобы затем использовать их в контексте шаблонов, например:
+```js
+// src/mocks/index.js
+
+module.exports = {
+  navigation: [
+    { title: 'About', path: '/about.html' },
+    { title: 'Contacts', path: '/contacts.html' },
+  ],
+};
 ```
-gulp.task('nunjucks', function() {
-  gulp.src(PATHS.src.templates + '*.html')
-    .pipe(data(function (file) {
-      return require('./' + PATHS.src.data + '_global.json');
-    }))
-    //Скопировать предыдущий пайп с заменой '_global.json' на нужное название
-    .pipe(nunjucks.compile())
-    .pipe(gulp.dest(PATHS.dist.html))
-    .pipe(bs.reload({ stream: true }));
-});
+
+```html
+<!-- src/templates/includes/header.html -->
+
+<nav>
+  {% for navItem in navigation %}
+    <a href="{{ navItem.path }}">{{ navItem.title }}</a>
+  {% endfor %}
+</nav>
 ```
-После редактирования gulpfile.js нужно перезапустить проект.
+
+```html
+<!-- dist/index.html -->
+
+<nav>
+  <a href="/about.html">About</a>
+  <a href="/contacts.html">Contacts</a>
+</nav>
+```
+
+## Пути к ассетам
+Пути к ассетам (изображениям, шрифтам и пр.) в стилях/скриптах необходимо указывать относительно расположения файла в директории `dist`. Например, 
+```css
+.block {
+  background-image: url('../img/picture.png');
+}
+```
